@@ -1,38 +1,20 @@
-/* ***************************
-  JWD JavaScript Assessment
-
-  This code is unfinished. You will need to study it to figure out what it does. Then you will need to use this and
-  your own code, to finish the app. 
-  
-  The tasks you need to do are below.
-
-    TASKS TODO:
-      1. Calculate the score as the total of the number of correct answers
-
-      2. Add an Event listener for the submit button, which will display the score and highlight 
-         the correct answers when the button is clicked. Use the code from lines 67 to 86 to help you.
-
-      3. Add 2 more questions to the app (each question must have 4 options).
-
-      4. Reload the page when the reset button is clicked (hint: search window.location)
-
-      5. Add a countdown timer - when the time is up, end the quiz, display the score and highlight the correct answers
-*************************** */
-
+// When DOM content loaded, add event listener for start button
 window.addEventListener('DOMContentLoaded', () => {
   const start = document.querySelector('#start');
   start.addEventListener('click', function (e) {
+    // show quizBlock element, hide the start message, start the timer
     document.querySelector('#quizBlock').style.display = 'block';
     start.style.display = 'none';
+    startTimer();
   });
+
   // quizArray QUESTIONS & ANSWERS
   // q = QUESTION, o = OPTIONS, a = CORRECT ANSWER
-  // Basic ideas from https://code-boxx.com/simple-javascript-quiz/
   const quizArray = [
     {
       q: 'Which is the third planet from the sun?',
       o: ['Saturn', 'Earth', 'Pluto', 'Mars'],
-      a: 1, // array index 1 - so Earth is the correct answer here
+      a: 1,
     },
     {
       q: 'Which is the largest ocean on Earth?',
@@ -43,6 +25,16 @@ window.addEventListener('DOMContentLoaded', () => {
       q: 'What is the capital of Australia',
       o: ['Sydney', 'Canberra', 'Melbourne', 'Perth'],
       a: 1,
+    },
+    {
+      q: 'What is the only flag that does not feature either red, white, or blue?',
+      o: ['Paraguay', 'Scotland', 'Peru', 'Jamaica'],
+      a: 3,
+    },
+    {
+      q: 'Lemurs are only native to one country, which one is it?',
+      o: ['Morocco', 'Costa Rica', 'Madagascar', 'Galapagos Islands'],
+      a: 2,
     },
   ];
 
@@ -64,27 +56,66 @@ window.addEventListener('DOMContentLoaded', () => {
   };
 
   // Calculate the score
+  let score = 0;
   const calculateScore = () => {
-    let score = 0;
     quizArray.map((quizItem, index) => {
       for (let i = 0; i < 4; i++) {
-        //highlight the li if it is the correct answer
         let li = `li_${index}_${i}`;
         let r = `radio_${index}_${i}`;
         liElement = document.querySelector('#' + li);
         radioElement = document.querySelector('#' + r);
 
+        // If correct answer, add green border to li Element
         if (quizItem.a == i) {
-          //change background color of li element here
+          liElement.style.border = '3px solid green';
         }
 
-        if (radioElement.checked) {
-          // code for task 1 goes here
+        // if correct answer selected, add one to the score variable
+        if (radioElement.checked && quizItem.a === i) {
+          score++;
         }
       }
     });
   };
 
+  // Display score
+  function displayScore() {
+    const scoreDiv = document.getElementById('score');
+    scoreDiv.innerHTML = `Score: ${score}`;
+  }
+
   // call the displayQuiz function
   displayQuiz();
+
+  // Submit button event listener
+  let quizOver = 0;
+  const submitButton = document.getElementById('btnSubmit');
+  submitButton.addEventListener('click', () => {
+    submitButton.style.display = 'none';
+    calculateScore();
+    displayScore();
+    quizOver = 1;
+  });
+
+  // Reset button event listener
+  const resetButton = document.getElementById('btnReset');
+  resetButton.addEventListener('click', () => {
+    location.reload()
+  });
+
+  // Timer
+  function startTimer() {
+    var timeleft = 59;
+    var downloadTimer = setInterval(function(){
+      if(timeleft < 0){
+        clearInterval(downloadTimer);
+        submitButton.click();
+      } else if (quizOver === 1) {
+        clearInterval(downloadTimer);
+      } else {
+        document.getElementById("time").innerHTML = timeleft + " seconds";
+      }
+      timeleft -= 1;
+    }, 1000)
+  };
 });

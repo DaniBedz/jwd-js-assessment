@@ -17,21 +17,21 @@
     <title>Quiz</title>
   </head>
   <body>
-    <div class="container m-5" id="start">
-      <div class="card" style="width: 18rem">
+    <div class="container col-4 ml-auto mr-auto m-5" id="start">
+      <div class="card text-center">
         <div class="card-body">
           <h5 class="card-title">Test your knowledge</h5>
-          <p class="card-text">Some quick description about the quiz .</p>
-          <a class="btn btn-primary">Start</a>
+          <p class="card-text">Try your best to answer 5 questions on general knowledge.<br><br> You have 60 seconds to complete the quiz.</p>
+          <a class="btn btn-primary text-white">Start the quiz!</a>
         </div>
       </div>
     </div>
 
     <!-- (B) QUIZ CONTAINER -->
-    <div class="container" id="quizBlock" style="display: none">
+    <div class="container mb-5" id="quizBlock" style="display: none">
       <div class="mb-5">
         <h2>Test your knowledge</h2>
-        - Time remaining <span id="time">01:00</span>
+        Time remaining <span id="time">60 seconds</span>
       </div>
       <div id="quizWrap"></div>
 
@@ -43,9 +43,11 @@
           Reset Quiz
         </button>
         <span id="score"></span>
+        <span id="countdown"></span>
       </div>
     </div>
 
+    <!-- Display the countdown timer in an element -->
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script
